@@ -15,24 +15,24 @@ class Html5DateField extends DateField implements Html5Field {
 	public function setPlaceholder($string) {
 		$this->placeholder = $string;
 	}
-	
-	function Field() {
-		$attributes = array(
-			'type' => 'date',
-			'class' => 'text' . ($this->extraClass() ? $this->extraClass() : ''),
-			'id' => $this->id(),
-			'name' => $this->Name(),
-			'value' => $this->Value(),
-			'tabindex' => $this->getTabIndex(),
-			'maxlength' => ($this->maxLength) ? $this->maxLength : null,
-			'size' => ($this->maxLength) ? min( $this->maxLength, 30 ) : null 
-		);
-		
-		if ($this->placeholder) $attributes['placeholder'] = $this->placeholder;
-		if($this->disabled) $attributes['disabled'] = 'disabled';
-		// @Todo: this doesn't work yet
-		//if ($this->required) $attributes['required'] = 'required';
-		
-		return $this->createTag('input', $attributes);
-	}
+
+    public function getAttributes() {
+        $attributes = array(
+            'type' => 'date',
+            'name' => $this->getName(),
+            'value' => $this->Value(),
+            'class' => 'text' . ($this->extraClass() ? $this->extraClass() : ''),
+            'id' => $this->ID(),
+            'disabled' => $this->isDisabled(),
+            'title' => $this->getDescription(),
+            'maxlength' => ($this->maxLength) ? $this->maxLength : null,
+            'size' => ($this->maxLength) ? min( $this->maxLength, 30 ) : null
+        );
+        if ($this->placeholder) $attributes['placeholder'] = $this->placeholder;
+        if ($this->disabled) $attributes['disabled'] = 'disabled';
+        if ($this->required) $attributes['required'] = 'required';
+
+
+        return array_merge($attributes, $this->attributes);
+    }
 }
